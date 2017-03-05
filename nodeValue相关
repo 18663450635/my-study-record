@@ -1,0 +1,21 @@
+当需要获取元素下面的text值时，我们会用到nodeValue属性。但是直接获取元素的nodeValue会返回null，因为文本内容位于元素子节点内。举例说明如下
+<p id="p1">
+  第一行
+  <span>第二行</span>
+  第三行
+</p>
+
+
+function text(e){ 
+var t=""; 
+e=e.childNodes || e;  //参数为元素此处就是元素，参数为元素子节点，此处就为子节点if(e.childNodes){e = e.childNodes;}else{e = e;}
+for(var i=0;i<e.length;i++){ 
+t += e[i].nodeType != 1 ? e[i].nodeValue : text(e[i].childNodes); 
+//判断是不是元素节点，是的遍历所有元素的子节点，拼接字符串，不是得话函数递归 
+} 
+return t; 
+} 
+var p1=document.getElementById("p1"); 
+alert(text(p1)); //返回第一行第二行第三行
+alert(text(p1.lastChild)); // 返回2第三行
+alert(text(p1.firstChild.nextSibling));//返回1 、第二行
